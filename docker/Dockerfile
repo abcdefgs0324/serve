@@ -64,7 +64,7 @@ RUN export USE_CUDA=1
 
 ARG CUDA_VERSION=""
 
-RUN git clone --depth 1 https://github.com/pytorch/serve.git
+RUN git clone -b pin0.8.2 --depth 1 https://github.com/abcdefgs0324/serve.git
 
 WORKDIR "serve"
 
@@ -85,7 +85,7 @@ RUN \
 # Make sure latest version of torchserve is uploaded before running this
 RUN \
     if echo "$BUILD_NIGHTLY" | grep -q "false"; then \
-        python -m pip install --no-cache-dir torchserve torch-model-archiver torch-workflow-archiver;\
+        python -m pip install --no-cache-dir torchserve==0.8.2 torch-model-archiver==0.8.2 torch-workflow-archiver==0.2.10;\
     else \
         python -m pip install --no-cache-dir torchserve-nightly torch-model-archiver-nightly torch-workflow-archiver-nightly;\
     fi
