@@ -64,7 +64,7 @@ RUN export USE_CUDA=1
 
 ARG USE_CUDA_VERSION=""
 
-RUN git clone --depth 1 --recursive https://github.com/pytorch/serve.git
+RUN git clone -b pin0.10.0 --depth 1 https://github.com/abcdefgs0324/serve.git
 
 WORKDIR "serve"
 
@@ -85,7 +85,7 @@ RUN \
 # Make sure latest version of torchserve is uploaded before running this
 RUN \
     if echo "$BUILD_NIGHTLY" | grep -q "false"; then \
-        python -m pip install --no-cache-dir torchserve torch-model-archiver torch-workflow-archiver;\
+        python -m pip install --no-cache-dir torchserve==0.10.0 torch-model-archiver==0.10.0 torch-workflow-archiver==0.2.12;\
     else \
         python -m pip install --no-cache-dir torchserve-nightly torch-model-archiver-nightly torch-workflow-archiver-nightly;\
     fi
@@ -216,9 +216,8 @@ RUN --mount=type=cache,target=/var/cache/apt \
     numactl \
     && if [ "$BUILD_WITH_IPEX" = "true" ]; then apt-get update && apt-get install -y libjemalloc-dev libgoogle-perftools-dev libomp-dev && ln -s /usr/lib/x86_64-linux-gnu/libjemalloc.so /usr/lib/libjemalloc.so && ln -s /usr/lib/x86_64-linux-gnu/libtcmalloc.so /usr/lib/libtcmalloc.so && ln -s /usr/lib/x86_64-linux-gnu/libiomp5.so /usr/lib/libiomp5.so; fi \
     && rm -rf /var/lib/apt/lists/*
-RUN git clone --recursive https://github.com/pytorch/serve.git \
-    && cd serve \
-    && git checkout ${BRANCH_NAME}
+RUN git clone -b pin0.10.0 --depth 1 https://github.com/abcdefgs0324/serve.git \
+    && cd serve
 COPY --from=compile-image /home/venv /home/venv
 ENV PATH="/home/venv/bin:$PATH"
 WORKDIR "serve"
