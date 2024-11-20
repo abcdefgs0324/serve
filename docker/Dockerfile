@@ -100,7 +100,7 @@ RUN \
         python -m pip install -r requirements/developer.txt;\
         python ts_scripts/install_from_src.py;\
     elif echo "$BUILD_NIGHTLY" | grep -q "false"; then \
-        python -m pip install --no-cache-dir torchserve torch-model-archiver torch-workflow-archiver;\
+        python -m pip install --no-cache-dir torchserve==0.11.1 torch-model-archiver==0.11.1 torch-workflow-archiver==0.2.14;\
     else \
         python -m pip install --no-cache-dir torchserve-nightly torch-model-archiver-nightly torch-workflow-archiver-nightly;\
     fi
